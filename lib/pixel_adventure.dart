@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
+//import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -9,7 +9,7 @@ import 'package:pixel_adventure_v2/components/player.dart';
 import 'package:pixel_adventure_v2/components/level.dart';
 
 class PixelAdventure extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks {
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late final CameraComponent cam;
