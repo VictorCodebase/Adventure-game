@@ -35,6 +35,7 @@
         "Level-01.tmx"
     ],
     "project": "pixel_adventure.tiled-project",
+    "property.type": "float",
     "recentFiles": [
         "PixelAdventure.tsx",
         "Level-01.tmx"

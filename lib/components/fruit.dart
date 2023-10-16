@@ -67,8 +67,10 @@ CollisionCallbacks{
     );
     _collected = true;
     }
-    // Future.delayed(const Duration(milliseconds: 400),
-    // );
+    Future.delayed(const Duration(milliseconds: 400),
+    (){
+      removeFromParent();
+    });
   }
 
 }
