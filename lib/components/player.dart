@@ -5,12 +5,13 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure_v2/components/collision_block.dart';
 import 'package:pixel_adventure_v2/components/custom_hitbox.dart';
+import 'package:pixel_adventure_v2/components/end_game.dart';
 import 'package:pixel_adventure_v2/components/saw.dart';
 import 'package:pixel_adventure_v2/components/utils.dart';
 import 'package:pixel_adventure_v2/components/fruit.dart';
 import '../pixel_adventure.dart';
 
-enum PlayerState { idle, running, jumping, falling, hit, appearing, dead }
+enum PlayerState { idle, running, jumping, falling, hit, appearing, disappearing }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<PixelAdventure>, KeyboardHandler, CollisionCallbacks {
@@ -26,11 +27,12 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation jumpingAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation appearingAnimation;
+  late final SpriteAnimation disappearingAnimation;
 
   final double stepTime = 0.05; 
 
-  final double _gravity = 12.8;
-  final double _jumpForce = 460;//N
+  final double _gravity = 15.8;
+  final double _jumpForce = 300;//N
   final double _terminalVelocity = 400;
 
   double horizontalMovement = 0.0;
@@ -47,6 +49,7 @@ class Player extends SpriteAnimationGroupComponent
   bool isOnGround = true;
   bool hasJumped = false;
   bool gotHit = false;
+  bool LevelComplete = false;
 
   @override
   FutureOr<void> onLoad() {
@@ -62,7 +65,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!gotHit){
+    if (!gotHit && !LevelComplete){
     _updatePlayerState();
     _updatePlayerMovement(dt);
     _checkHorizontalCollision();
@@ -97,7 +100,8 @@ class Player extends SpriteAnimationGroupComponent
       other.collidedWithPlayer();
     }
     if (other is Saw)_respawn();
-    super.onCollision(intersectionPoints, other);
+    if (other is EndGame){_goToNextLevel(); }
+    super.onCollision(intersectionPoints, other); 
   }
 
   void _loadAllAnimations() {
@@ -107,6 +111,7 @@ class Player extends SpriteAnimationGroupComponent
     fallingAnimation = _spriteAnimation("Fall", 1, true);
     hitAnimation = _spriteAnimation("Hit", 7, false);
     appearingAnimation = _specialSpriteAnimation("Appearing", 7, true);
+    disappearingAnimation = _specialSpriteAnimation("Disappearing", 7, false);
 
     //listing all animations
     animations = {
@@ -116,6 +121,7 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.falling: fallingAnimation,
       PlayerState.hit: hitAnimation,
       PlayerState.appearing: appearingAnimation,
+      PlayerState.disappearing: disappearingAnimation,
     };
 
     // set current animation
@@ -248,6 +254,21 @@ class Player extends SpriteAnimationGroupComponent
         gotHit = false;
         velocity = Vector2.zero();
         position = startingPosition;
+      },);
+    });
+  }
+  
+  void _goToNextLevel() {
+    const levelTransitionDuration = Duration(milliseconds: 50 * 7);
+    current = PlayerState.disappearing;
+    LevelComplete = true;
+    Future.delayed(levelTransitionDuration, (){
+      gameRef.goToNextLevel();
+      current = PlayerState.appearing;
+      
+      Future.delayed(levelTransitionDuration, (){
+        velocity = Vector2.zero();
+        LevelComplete = false;
       },);
     });
   }

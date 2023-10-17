@@ -15,15 +15,15 @@
                 3
             ],
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 314.33333333333337,
+                "x": 313.66666666666663,
                 "y": 274.33333333333337
             }
         },
         "Level-02.tmx": {
             "scale": 1.3893749999999998,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 320.64777327935235,
                 "y": 183.89563652721552
