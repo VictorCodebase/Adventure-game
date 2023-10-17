@@ -53,6 +53,7 @@ CollisionCallbacks{
       ),
     );
   }
+  //FIXME: I do not return onload here, but I do in the other components. Why?
   
   void collidedWithPlayer() {
     if (!_collected){
@@ -67,8 +68,10 @@ CollisionCallbacks{
     );
     _collected = true;
     }
-    // Future.delayed(const Duration(milliseconds: 400),
-    // );
+    Future.delayed(const Duration(milliseconds: 400),
+    (){
+      removeFromParent();
+    });
   }
 
 }

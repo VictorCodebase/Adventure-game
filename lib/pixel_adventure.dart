@@ -83,4 +83,14 @@ class PixelAdventure extends FlameGame
         player.horizontalMovement = 0.0;
     }
   }
+
+  void goToNextLevel() {
+    final world = Level(
+      player: player,
+      levelName: 'Level-02',
+    );
+    cam.world = world;
+    //joystick.remove();
+    add(world);
+  }
 }
