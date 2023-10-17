@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure_v2/components/background_tile.dart';
 import 'package:pixel_adventure_v2/components/collision_block.dart';
+import 'package:pixel_adventure_v2/components/end_game.dart';
 import 'package:pixel_adventure_v2/components/fruit.dart';
 import 'package:pixel_adventure_v2/components/player.dart';
 import 'package:pixel_adventure_v2/components/saw.dart';
@@ -84,9 +85,16 @@ class Level extends World with HasGameRef<PixelAdventure>{
               offsetPos: offsetPos ?? 0,
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
-            );
+              );
             add(saw);
             break;
+            case 'EndGame':
+              final endGame = EndGame(
+                position: Vector2(spawnPoint.x, spawnPoint.y),
+                size: Vector2(spawnPoint.width, spawnPoint.height),
+              );
+              add(endGame);
+              break;
           default:
         }
       }
@@ -94,7 +102,7 @@ class Level extends World with HasGameRef<PixelAdventure>{
   }
   
   void _addCollisions() {
-        final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
+    final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
     if (collisionLayer != null) {
       for (final collision in collisionLayer.objects) {
         switch (collision.class_) {

@@ -53,6 +53,7 @@ CollisionCallbacks{
       ),
     );
   }
+  //FIXME: I do not return onload here, but I do in the other components. Why?
   
   void collidedWithPlayer() {
     if (!_collected){

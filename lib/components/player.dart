@@ -245,8 +245,9 @@ class Player extends SpriteAnimationGroupComponent
       position = startingPosition -Vector2.all(32);
       current = PlayerState.appearing;
       Future.delayed(hitDuration, (){
-        position = startingPosition;
         gotHit = false;
+        velocity = Vector2.zero();
+        position = startingPosition;
       },);
     });
   }
